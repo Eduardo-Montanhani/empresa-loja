@@ -71,8 +71,15 @@ class PacienteController extends Controller
     {
         $response = Http::withToken($this->token())->delete(env('JAVA_API_URL') . "/pacientes/{$id}");
 
-        return $response->successful()
-            ? redirect()->route('pacientes.index')->with('success', 'Paciente removido!')
-            : back()->withErrors(['error' => 'Erro ao excluir']);
+        if ($response->status() == 204) {
+            // Exclusão OK
+            return redirect()->route('pacientes.index')->with('success', 'Paciente excluído com sucesso.');
+        } elseif ($response->status() == 400) {
+            // Erro - paciente com consulta pendente
+            return redirect()->route('pacientes.index')->with('error', $response->body());
+        }
+
+        // Outro erro inesperado
+        return redirect()->route('pacientes.index')->with('error', 'Erro inesperado ao tentar excluir paciente.');
     }
 }

@@ -7,12 +7,18 @@ use App\Http\Controllers\PacienteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 
 
+
 Route::middleware(['auth.java'])->group(function () {
+
+    Route::get('/home', function() {
+        return view('home');
+    })->name('home');
+
     //pacientes
     Route::get('/pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
     Route::get('/pacientes/create', [PacienteController::class, 'create'])->name('pacientes.create');

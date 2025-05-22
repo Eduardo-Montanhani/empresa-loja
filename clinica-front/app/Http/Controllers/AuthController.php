@@ -31,7 +31,7 @@ class AuthController extends Controller
                 'username' => $data['username'],
                 'role' => $data['role']
             ]);
-            return redirect()->route('pacientes.index');
+            return redirect()->route('home');
         }
 
         return back()->withErrors(['login' => 'Usuário ou senha inválidos.']);
